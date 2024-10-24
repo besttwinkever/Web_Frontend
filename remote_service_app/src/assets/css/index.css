@@ -1,11 +1,11 @@
 @font-face {
   font-family: circebold;
-  src: url("./font/Circe-Bold.ttf");
+  src: url("../font/Circe-Bold.ttf");
 }
 
 @font-face {
   font-family: circeregular;
-  src: url("./font/Circe-Regular.ttf");
+  src: url("../font/Circe-Regular.ttf");
 }
 
 html, body {

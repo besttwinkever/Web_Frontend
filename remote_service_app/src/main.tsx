@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import './index.css'
+import './assets/css/index.css'
 import IssuesPage from './pages/IssuesPage'
 import MainPage from './pages/MainPage'
 

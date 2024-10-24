@@ -15,8 +15,8 @@ export interface IResult {
     issues: IIssue[]
 }
 
-export const getIssuesByName = async (name = ""): Promise<IResult> => {
-    return fetch(`http://localhost:8000/issues/?name=${name}`).then(
+export const getIssuesByName = async (issue_name = ""): Promise<IResult> => {
+    return fetch(`http://localhost:8000/issues/?issue_name=${issue_name}`).then(
         (response) => response.json()
     )
 }
