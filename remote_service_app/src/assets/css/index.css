@@ -1,0 +1,22 @@
+@font-face {
+  font-family: circebold;
+  src: url("./font/Circe-Bold.ttf");
+}
+
+@font-face {
+  font-family: circeregular;
+  src: url("./font/Circe-Regular.ttf");
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: circebold;
+  margin: 0;
+  background-color: rgb(250, 250, 250);
+  overflow-x: hidden;
+}
+
+.nav {
+  padding-left: 2em;
+}

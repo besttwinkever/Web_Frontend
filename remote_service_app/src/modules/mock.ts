@@ -1,0 +1,1 @@
+// import {IIss} from './get'
