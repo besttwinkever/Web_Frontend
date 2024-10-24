@@ -1,0 +1,66 @@
+import { FC, useEffect, useState } from 'react'
+import { useParams } from "react-router-dom"
+
+import { IIssue, getIssueById } from '../modules/serviceApi'
+import { ISSUE_MOCK } from '../modules/mock'
+
+import ServiceNavbar from '../components/ServiceNavbar'
+
+import '../assets/css/issuePage.css'
+import { BreadCrumbs } from '../components/BreadCrumbs'
+
+const IssuePage: FC = () => {
+
+    const [issue, setIssue] = useState<IIssue>({
+        id: 0,
+        name: 'Происшествие',
+        description: '',
+        image: ''
+    })
+
+    const { id } = useParams()
+
+    useEffect(() => {
+        if (!id) return
+        let id_numeric: number = parseInt(id)
+        if (isNaN(id_numeric)) return
+
+        getIssueById(id_numeric).then((response) => {
+            setIssue(response)
+        }).catch(() => {
+            setIssue(ISSUE_MOCK)
+        })
+    }, [])
+
+    return (
+        <>
+            <ServiceNavbar/>
+            <BreadCrumbs crumbs={[
+                {
+                    label: 'Виды происшествий',
+                    path: '/issues'
+                },
+                {
+                    label: issue?.name
+                }
+            ]}></BreadCrumbs>
+            <div className='d-flex flex-column ms-4 content-fluid'>
+               <h2 className='text-uppercase'>{issue?.name}</h2>
+               <div className='container-fluid mt-3'>
+                    <div className='row'>
+                        <div className='col-3 p-0'>
+                            <div className='appeal-img-bg'>
+                                <img src={issue?.image} className='appeal-img' alt='appeal'></img>
+                            </div>
+                        </div>
+                        <div className='ps-5 col-5 mt-2'>
+                            <p>{issue?.description}</p>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </>
+    )
+}
+
+export default IssuePage

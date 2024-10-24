@@ -1,12 +1,15 @@
 import { FC, useEffect, useState } from 'react'
 
 import { IIssue, getIssuesByName } from '../modules/serviceApi'
+import { ISSUES_MOCK } from '../modules/mock'
 
 import ServiceNavbar from '../components/ServiceNavbar'
 import IssueCard from '../components/IssueCard'
 
 import '../assets/css/issuesPage.css'
 import InputField from '../components/InputField'
+import { BreadCrumbs } from '../components/BreadCrumbs'
+import { ROUTE_LABELS } from '../modules/Routes'
 
 const IssuesPage: FC = () => {
 
@@ -18,6 +21,9 @@ const IssuesPage: FC = () => {
         setLoading(true)
         getIssuesByName(searchValue).then((response) => {
             setIssues(response.issues)
+            setLoading(false)
+        }).catch(() => {
+            setIssues(ISSUES_MOCK.issues)
             setLoading(false)
         })
     }
@@ -33,10 +39,11 @@ const IssuesPage: FC = () => {
     return (
         <>
             <ServiceNavbar></ServiceNavbar>
-            <div className='d-flex flex-column mt-5 content-fluid'>
+            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.ISSUES}]}></BreadCrumbs>
+            <div className='d-flex flex-column content-fluid'>
                 <div className='d-flex w-100'>
                     <div className='d-flex justify-content-center w-100'>
-                        <InputField 
+                        <InputField
                             value={searchValue} 
                             setValue={setSearchValue} 
                             onSubmit={handleSearch} 
@@ -45,14 +52,14 @@ const IssuesPage: FC = () => {
                         </InputField>
                     </div>
                     <div className='d-flex flex-grow-1 appeal-content'>
-                        <img src='/src/assets/img/appeal-empty.svg' className='appeal-img' alt='appeal'></img>
+                        <img src='/src/assets/img/appeal-empty.svg' className='appeal-img-sm' alt='appeal'></img>
                     </div>
                 </div>
                 <div className='d-flex gap-5 mx-4 mt-5'>
                     {issues.map((issue) => {
                         return (
                             <IssueCard
-                                key={issue.id}
+                                id={issue.id}
                                 title={issue.name}
                                 imageUrl={issue.image}
                             ></IssueCard>

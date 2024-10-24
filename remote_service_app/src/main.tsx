@@ -8,15 +8,22 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/css/index.css'
 import IssuesPage from './pages/IssuesPage'
 import MainPage from './pages/MainPage'
+import IssuePage from './pages/IssuePage'
+
+import { ROUTES } from './modules/Routes'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.HOME,
     element: <MainPage></MainPage>
   },
   {
-    path: '/issues',
+    path: ROUTES.ISSUES,
     element: <IssuesPage />
+  },
+  {
+    path: `${ROUTES.ISSUES}/:id`,
+    element: <IssuePage />
   }
 ])
 
