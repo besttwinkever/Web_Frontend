@@ -15,7 +15,7 @@ const InputField: FC<Props> = ({ value, setValue, onSubmit, loading, placeholder
     return (
         <div className="inputField">
             <input value={value} className={inputClass} placeholder={placeholder} onChange={(event => setValue(event.target.value))}/>
-            <Button className='ms-3' variant='outline-danger' disabled={loading} onClick={onSubmit}>{buttonTitle}</Button>
+            <Button className='submit-btn' variant='outline-danger' disabled={loading} onClick={onSubmit}>{buttonTitle}</Button>
         </div>
     )
 }

@@ -60,7 +60,7 @@ const IssuesPage: FC = () => {
                         <img src='/src/assets/img/appeal-empty.svg' className='appeal-img-sm' alt='appeal'></img>
                     </div>
                 </div>
-                <div className='d-flex flex-wrap gap-5 mx-4 mt-5 w-100'>
+                <div className='issues-list d-flex flex-wrap gap-5 mt-5 w-100'>
                     {issues.map((issue) => {
                         return (
                             <IssueCard

@@ -14,3 +14,62 @@
     height: 20em;
     background-color: rgb(206, 0, 0);
 }
+
+.issue-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-left: 0;
+}
+
+.issue-details-description {
+    padding-left: 2rem;
+    max-width: 50rem;
+}
+
+@media (max-width: 1331px) {
+    .issue-details-description {
+        max-width: 45rem;
+    }
+}
+
+@media (max-width: 1251px) {
+    .issue-details-description {
+        max-width: 40rem;
+    }
+}
+
+@media (max-width: 1172px) {
+    .issue-details-description {
+        max-width: 30rem;
+    }
+}
+
+@media (max-width: 1028px) {
+    .issue-details-description {
+        max-width: 25rem;
+    }
+}
+
+@media (max-width: 932px) {
+    .issue-details {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .issue-details-description {
+        padding-left: 0;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 512px) {
+
+    .issue-details {
+        gap: 0;
+    }
+
+    .appeal-img-bg {
+        display: none;
+    }
+}

@@ -53,16 +53,14 @@ const IssuePage: FC = () => {
             ]}></BreadCrumbs>
             <div className='d-flex flex-column ms-4 content-fluid'>
                <h2 className='text-uppercase'>{issue?.name}</h2>
-               <div className='container-fluid mt-3'>
-                    <div className='row'>
-                        <div className='col-3 p-0 shadow shadow-bg'>
-                            <div className='appeal-img-bg'>
-                                <img src={issue?.image} className='appeal-img' alt='appeal'></img>
-                            </div>
+               <div className='issue-details container-fluid mt-3'>
+                    <div className='p-0'>
+                        <div className='appeal-img-bg'>
+                            <img src={issue?.image} className='appeal-img' alt='appeal'></img>
                         </div>
-                        <div className='ps-5 col-5 mt-2'>
-                            <p>{issue?.description}</p>
-                        </div>
+                    </div>
+                    <div className='issue-details-description mt-2'>
+                        <p>{issue?.description}</p>
                     </div>
                </div>
             </div>
