@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 
 import { IIssue, getIssueById } from '../modules/serviceApi'
-import { ISSUE_MOCK } from '../modules/mock'
+import { ISSUES_MOCK } from '../modules/mock'
 
 import ServiceNavbar from '../components/ServiceNavbar'
 
@@ -28,7 +28,14 @@ const IssuePage: FC = () => {
         getIssueById(id_numeric).then((response) => {
             setIssue(response)
         }).catch(() => {
-            setIssue(ISSUE_MOCK)
+            let found = false;
+            ISSUES_MOCK.issues.forEach((issue) => {
+                if (issue.id === id_numeric)
+                    found = true;
+                    return setIssue(issue)
+            })
+            if (!found)
+                setIssue(ISSUES_MOCK.issues[0])
         })
     }, [])
 
@@ -48,7 +55,7 @@ const IssuePage: FC = () => {
                <h2 className='text-uppercase'>{issue?.name}</h2>
                <div className='container-fluid mt-3'>
                     <div className='row'>
-                        <div className='col-3 p-0'>
+                        <div className='col-3 p-0 shadow shadow-bg'>
                             <div className='appeal-img-bg'>
                                 <img src={issue?.image} className='appeal-img' alt='appeal'></img>
                             </div>

@@ -16,7 +16,7 @@ const IssueCard: FC<IIssueCardProps> = (
     { id, title, imageUrl }
 ) => {
     return (
-        <Card style={{ width: '18rem' }}>
+        <Card className='shadow shadow-bg' style={{ width: '18rem' }}>
             <Card.Img variant="top" src={imageUrl || '/src/assets/img/unknown.jpg'} />
             <Card.Body className='d-flex flex-column'>
                 <Card.Title>{title}</Card.Title>

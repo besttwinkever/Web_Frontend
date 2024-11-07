@@ -23,7 +23,12 @@ const IssuesPage: FC = () => {
             setIssues(response.issues)
             setLoading(false)
         }).catch(() => {
-            setIssues(ISSUES_MOCK.issues)
+            let issues: IIssue[] = []
+            ISSUES_MOCK.issues.forEach((issue) => {
+                if (issue.name.includes(searchValue))
+                    issues.push(issue)
+            })
+            setIssues(issues)
             setLoading(false)
         })
     }
@@ -55,7 +60,7 @@ const IssuesPage: FC = () => {
                         <img src='/src/assets/img/appeal-empty.svg' className='appeal-img-sm' alt='appeal'></img>
                     </div>
                 </div>
-                <div className='d-flex gap-5 mx-4 mt-5'>
+                <div className='d-flex flex-wrap gap-5 mx-4 mt-5 w-100'>
                     {issues.map((issue) => {
                         return (
                             <IssueCard
