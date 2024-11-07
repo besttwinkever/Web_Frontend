@@ -30,9 +30,10 @@ const IssuePage: FC = () => {
         }).catch(() => {
             let found = false;
             ISSUES_MOCK.issues.forEach((issue) => {
-                if (issue.id === id_numeric)
+                if (issue.id === id_numeric) {
                     found = true;
                     return setIssue(issue)
+                }
             })
             if (!found)
                 setIssue(ISSUES_MOCK.issues[0])
