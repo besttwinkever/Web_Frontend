@@ -12,6 +12,9 @@ import IssuePage from './pages/IssuePage'
 
 import { ROUTES } from './modules/Routes'
 
+import {store} from "./store";
+import { Provider } from "react-redux";
+
 const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
@@ -29,6 +32,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 )

@@ -11,21 +11,30 @@ import InputField from '../components/InputField'
 import { BreadCrumbs } from '../components/BreadCrumbs'
 import { ROUTE_LABELS } from '../modules/Routes'
 
+import { useDispatch } from 'react-redux'
+import { setSearchValueAction, useSearchValue } from '../slices/dataSlice'
+
 const IssuesPage: FC = () => {
 
     const [loading, setLoading] = useState(false)
     const [issues, setIssues] = useState<IIssue[]>([])
     const [searchValue, setSearchValue] = useState('')
 
-    const updateIssues = () => {
+    const dispatch = useDispatch()
+    const reactSearchValue = useSearchValue()
+
+    const updateIssues = (_searchValue='') => {
+        if (_searchValue.length == 0)
+            _searchValue = searchValue
         setLoading(true)
-        getIssuesByName(searchValue).then((response) => {
+        dispatch(setSearchValueAction(_searchValue))
+        getIssuesByName(_searchValue).then((response) => {
             setIssues(response.issues)
             setLoading(false)
         }).catch(() => {
             let issues: IIssue[] = []
             ISSUES_MOCK.issues.forEach((issue) => {
-                if (issue.name.includes(searchValue))
+                if (issue.name.includes(_searchValue))
                     issues.push(issue)
             })
             setIssues(issues)
@@ -34,7 +43,8 @@ const IssuesPage: FC = () => {
     }
 
     useEffect(() => {
-        updateIssues()
+        setSearchValue(reactSearchValue)
+        updateIssues(reactSearchValue)
     }, [])
 
     const handleSearch = () => {
