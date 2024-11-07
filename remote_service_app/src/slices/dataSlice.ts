@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const dataSlice = createSlice({
     name: 'data',
@@ -13,8 +14,7 @@ const dataSlice = createSlice({
     }
 })
 
-export const useSearchValue = () => useSelector(state => state.ourData.SearchValue)
-
+export const useSearchValue = () => useSelector((state: RootState) => state.ourData.SearchValue)
 export const {
     setSearchValue: setSearchValueAction
 } = dataSlice.actions
