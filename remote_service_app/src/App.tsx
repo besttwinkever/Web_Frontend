@@ -9,10 +9,10 @@ import IssuePage from './pages/IssuePage'
 
 import { ROUTES } from './modules/Routes'
 
-
 function App() {
+
     return (
-      <BrowserRouter basename="/Web_Frontend">
+      <BrowserRouter basename="/">
         <Routes>
           <Route path={ROUTES.HOME} index element={<MainPage />} />
           <Route path={ROUTES.ISSUES} element={<IssuesPage />} />

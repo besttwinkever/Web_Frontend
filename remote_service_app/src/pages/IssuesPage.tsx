@@ -67,7 +67,7 @@ const IssuesPage: FC = () => {
                         </InputField>
                     </div>
                     <div className='d-flex flex-grow-1 appeal-content'>
-                        <img src='/Web_Frontend/img/appeal-empty.svg' className='appeal-img-sm' alt='appeal'></img>
+                        <img src='/img/appeal-empty.svg' className='appeal-img-sm' alt='appeal'></img>
                     </div>
                 </div>
                 <div className='issues-list d-flex flex-wrap gap-5 mt-5 w-100'>
