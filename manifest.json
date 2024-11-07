@@ -1,7 +1,7 @@
 {
     "name": "Удаленная поддержка",
     "short_name": "Удаленная поддержка",
-    "start_url": "/",
+    "start_url": "/Web_Frontend/",
     "display": "standalone",
     "background_color": "#fdfdfd",
     "theme_color": "#db4938",
