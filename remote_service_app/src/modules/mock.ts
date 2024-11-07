@@ -1,7 +1,7 @@
 import { IResult } from "./serviceApi";
 
 function convertPathToAbsolute(path: string) {
-    let absolutePath = '/'
+    let absolutePath = '/Web_Frontend'
     return absolutePath + path
 }
 
