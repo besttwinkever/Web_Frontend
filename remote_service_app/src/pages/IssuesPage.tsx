@@ -23,8 +23,8 @@ const IssuesPage: FC = () => {
     const dispatch = useDispatch()
     const reactSearchValue = useSearchValue()
 
-    const updateIssues = (_searchValue='') => {
-        if (_searchValue.length == 0)
+    const updateIssues = (_searchValue='', force = false) => {
+        if (_searchValue.length == 0 && !force)
             _searchValue = searchValue
         setLoading(true)
         dispatch(setSearchValueAction(_searchValue))
@@ -51,6 +51,11 @@ const IssuesPage: FC = () => {
         updateIssues()
     }
 
+    const handleClear = () => {
+        setSearchValue('')
+        updateIssues('', true)
+    }
+
     return (
         <>
             <ServiceNavbar></ServiceNavbar>
@@ -62,6 +67,7 @@ const IssuesPage: FC = () => {
                             value={searchValue} 
                             setValue={setSearchValue} 
                             onSubmit={handleSearch} 
+                            onClear={handleClear}
                             loading={loading} 
                             placeholder='Введите название происшествия'>
                         </InputField>
