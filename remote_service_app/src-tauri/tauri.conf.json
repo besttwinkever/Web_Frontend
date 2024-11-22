@@ -2,10 +2,10 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "remote_service_app",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "me.mrcreepton.remotesupport",
   "build": {
     "frontendDist": "../build",
-    "devUrl": "http://192.168.1.7:3000",
+    "devUrl": "http://192.168.1.8:5173",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
   },
