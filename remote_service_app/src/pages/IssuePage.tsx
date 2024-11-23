@@ -11,6 +11,7 @@ import { Issue } from '../api/Api'
 import { api } from '../api'
 import { useDispatch } from 'react-redux'
 import { setErrorBoxTextAction, setLoaderStatusAction } from '../slices/dataSlice'
+import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
 
 const IssuePage: FC = () => {
 
@@ -56,7 +57,7 @@ const IssuePage: FC = () => {
             <ServiceNavbar/>
             <BreadCrumbs crumbs={[
                 {
-                    label: 'Виды происшествий',
+                    label: ROUTE_LABELS.ISSUES,
                     path: '/issues'
                 },
                 {

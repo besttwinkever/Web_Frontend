@@ -8,7 +8,8 @@ import { api } from '../api'
 import { Appeal } from '../api/Api'
 import { useNavigate, useParams } from 'react-router-dom'
 import AppealIssueCard from '../components/AppealIssueCard'
-import { ROUTES } from '../modules/Routes'
+import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
+import { BreadCrumbs } from '../components/BreadCrumbs'
 
 const AppealPage: FC = () => {
 
@@ -102,6 +103,15 @@ const AppealPage: FC = () => {
 
     return (
         <BasePage>
+            <BreadCrumbs crumbs={[
+                    {
+                        label: ROUTE_LABELS.APPEALS,
+                        path: ROUTES.APPEALS
+                    },
+                    {
+                        label: `Обращение №${appeal?.id}`
+                    }
+            ]}></BreadCrumbs>
             <div className='container-fluid d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-4 w-75 gap-3'>
                 <h1>Обращение №{appeal?.id}</h1>
                 <div className='d-flex gap-5'>

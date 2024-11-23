@@ -7,7 +7,8 @@ import { setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, 
 import { api } from '../api'
 import { Appeal } from '../api/Api'
 import { Link } from 'react-router-dom'
-import { ROUTES } from '../modules/Routes'
+import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
+import { BreadCrumbs } from '../components/BreadCrumbs'
 
 const AppealsPage: FC = () => {
 
@@ -45,6 +46,11 @@ const AppealsPage: FC = () => {
 
     return (
         <BasePage>
+            <BreadCrumbs crumbs={[
+                    {
+                        label: ROUTE_LABELS.APPEALS
+                    }
+            ]}></BreadCrumbs>
             <div className='container-fluid d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-3 w-75'>
                 <h3>Мои обращения</h3>
                 <Table striped bordered hover>
