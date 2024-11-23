@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { AppealIssues } from "../api/Api";
 
 const dataSlice = createSlice({
     name: 'data',
@@ -9,7 +10,11 @@ const dataSlice = createSlice({
         User: null,
         LoaderStatus: false,
         ErrorBoxStatus: false,
-        ErrorBoxText: ''
+        ErrorBoxText: '',
+        ActiveAppeal: {
+            id: null, count: 0
+        },
+        AppealIssues: []
     },
     reducers: {
         setSearchValue(state, {payload}) {
@@ -26,6 +31,12 @@ const dataSlice = createSlice({
         },
         setErrorBoxText(state, {payload}) {
             state.ErrorBoxText = payload
+        },
+        setActiveAppeal(state, {payload}) {
+            state.ActiveAppeal = payload
+        },
+        setAppealIssues(state, {payload}) {
+            state.AppealIssues = payload
         }
     }
 })
@@ -35,12 +46,16 @@ export const useErrorBoxStatus = () => useSelector((state: RootState) => state.o
 export const useErrorBoxText = () => useSelector((state: RootState) => state.ourData.ErrorBoxText)
 export const useSearchValue = () => useSelector((state: RootState) => state.ourData.SearchValue)
 export const useUser = () => useSelector((state: RootState) => state.ourData.User)
+export const useActiveAppeal = () => useSelector((state: RootState) => state.ourData.ActiveAppeal)
+export const useAppealIssues = () => useSelector((state: RootState) => state.ourData.AppealIssues)
 export const {
     setLoaderStatus: setLoaderStatusAction,
     setErrorBoxStatus: setErrorBoxStatusAction,
     setErrorBoxText: setErrorBoxTextAction,
     setSearchValue: setSearchValueAction,
-    setUser: setUserAction
+    setUser: setUserAction,
+    setActiveAppeal: setActiveAppealAction,
+    setAppealIssues: setAppealIssuesAction,
 } = dataSlice.actions
 
 export default dataSlice.reducer

@@ -29,9 +29,19 @@
     height: 9rem;
 }
 
-.details-button-link {
-    width: 100%;
-    align-self: self-end;
+.appeal-count {
+    position: absolute;
+    top: 0;
+    right: -15px;
+    width: 24px;
+    height: 13px;
+    background-color: rgb(204, 0, 0);
+    color: white;
+    font-size: 11px;
+    outline-width: 0.5px;
+    outline-color: white;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .issues-list {

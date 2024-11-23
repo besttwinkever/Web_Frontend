@@ -10,6 +10,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPager";
 
 import { ROUTES } from './modules/Routes'
+import AppealsPage from "./pages/AppealsPage";
+import AppealPage from "./pages/AppealPage";
 
 function App() {
     return (
@@ -21,6 +23,8 @@ function App() {
             <Route path={ROUTES.ISSUES + "/:id"} element={<IssuePage />} />
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
             <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+            <Route path={ROUTES.APPEALS} element={<AppealsPage />} />
+            <Route path={ROUTES.APPEAL + "/:id"} element={<AppealPage />} />
           </Routes>
         </BrowserRouter>
       </>

@@ -1,17 +1,20 @@
 import { FC, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 
-import { IIssue, getIssueById } from '../modules/serviceApi'
 import { ISSUES_MOCK } from '../modules/mock'
 
 import ServiceNavbar from '../components/ServiceNavbar'
 
 import '../assets/css/issuePage.css'
 import { BreadCrumbs } from '../components/BreadCrumbs'
+import { Issue } from '../api/Api'
+import { api } from '../api'
+import { useDispatch } from 'react-redux'
+import { setErrorBoxTextAction, setLoaderStatusAction } from '../slices/dataSlice'
 
 const IssuePage: FC = () => {
 
-    const [issue, setIssue] = useState<IIssue>({
+    const [issue, setIssue] = useState<Issue>({
         id: 0,
         name: 'Происшествие',
         description: '',
@@ -19,25 +22,33 @@ const IssuePage: FC = () => {
     })
 
     const { id } = useParams()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (!id) return
         let id_numeric: number = parseInt(id)
         if (isNaN(id_numeric)) return
 
-        getIssueById(id_numeric).then((response) => {
-            setIssue(response)
-        }).catch(() => {
-            let found = false;
-            ISSUES_MOCK.issues.forEach((issue) => {
-                if (issue.id === id_numeric) {
-                    found = true;
-                    return setIssue(issue)
-                }
+        const getDetails = async (id: number) => {
+            dispatch(setLoaderStatusAction(true))
+            await api.issues.issuesRead(id.toString()).then((response) => {
+                setIssue(response.data)
+            }).catch(() => {
+                let found = false;
+                ISSUES_MOCK.issues.forEach((issue) => {
+                    if (issue.id === id_numeric) {
+                        found = true;
+                        return setIssue(issue)
+                    }
+                })
+                if (!found)
+                    setIssue(ISSUES_MOCK.issues[0])
+            }).finally(() => {
+                dispatch(setLoaderStatusAction(false))
             })
-            if (!found)
-                setIssue(ISSUES_MOCK.issues[0])
-        })
+        }
+
+        getDetails(id_numeric)
     }, [])
 
     return (

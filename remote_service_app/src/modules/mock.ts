@@ -1,15 +1,16 @@
-import { IResult } from "./serviceApi";
+import { IssueListResponse } from "../api/Api"
 
 function convertPathToAbsolute(path: string) {
     let absolutePath = '/Web_Frontend'
     return absolutePath + path
 }
 
-export const ISSUES_MOCK: IResult = {
+export const ISSUES_MOCK: IssueListResponse = {
     active_appeal: {
         id: 0,
         count: 0
     },
+    appeal_issues: [],
     issues: [
         {
             id: 2,

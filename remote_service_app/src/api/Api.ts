@@ -9,14 +9,52 @@
  * ---------------------------------------------------------------
  */
 
+export interface ActiveAppeal {
+  /** Id */
+  id: number;
+  /** Count */
+  count: number;
+}
+
+export interface Issue {
+  /** Id */
+  id?: number;
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 64
+   */
+  name: string;
+  /**
+   * Description
+   * @minLength 1
+   * @maxLength 300
+   */
+  description: string;
+  /**
+   * Image
+   * @minLength 1
+   */
+  image?: string;
+}
+
 export interface AppealIssues {
-  /** Issue */
-  issue?: number;
+  issue: Issue;
   /**
    * Count
    * @min 1
    * @max 2147483647
    */
+  count: number;
+}
+
+export interface AppealIssuesAddResponse {
+  active_appeal: ActiveAppeal;
+  appeal_issues: AppealIssues[];
+}
+
+export interface AppealIssueEdit {
+  /** Count */
   count: number;
 }
 
@@ -55,31 +93,43 @@ export interface Appeal {
   issues?: AppealIssues[];
 }
 
+export interface AppealEdit {
+  /**
+   * Connection code
+   * @minLength 1
+   */
+  connection_code: string;
+}
+
 export interface AppealFinish {
   /** Apply */
   apply: boolean;
 }
 
-export interface Issue {
+export interface IssuesResponse {
   /** Id */
-  id?: number;
+  id: number;
   /**
    * Name
    * @minLength 1
-   * @maxLength 64
    */
   name: string;
   /**
    * Description
    * @minLength 1
-   * @maxLength 300
    */
   description: string;
   /**
    * Image
    * @minLength 1
    */
-  image?: string;
+  image: string;
+}
+
+export interface IssueListResponse {
+  active_appeal: ActiveAppeal;
+  issues: IssuesResponse[];
+  appeal_issues: AppealIssues[];
 }
 
 export interface IssueImage {
@@ -136,6 +186,24 @@ export interface UserLogin {
    * @minLength 1
    */
   username: string;
+  /**
+   * Password
+   * @minLength 1
+   */
+  password: string;
+}
+
+export interface UserRegister {
+  /**
+   * Username
+   * @minLength 1
+   */
+  username: string;
+  /**
+   * Email
+   * @minLength 1
+   */
+  email: string;
   /**
    * Password
    * @minLength 1
@@ -298,10 +366,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     appealIssuesCreate: (issueId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<AppealIssuesAddResponse, any>({
         path: `/appeal_issues/${issueId}/`,
         method: "POST",
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -313,7 +382,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/appeal_issues/{issue_id}/
      * @secure
      */
-    appealIssuesUpdate: (issueId: string, data: AppealIssues, params: RequestParams = {}) =>
+    appealIssuesUpdate: (issueId: string, data: AppealIssueEdit, params: RequestParams = {}) =>
       this.request<AppealIssues, any>({
         path: `/appeal_issues/${issueId}/`,
         method: "PUT",
@@ -350,10 +419,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     appealsList: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<Appeal[], any>({
         path: `/appeals/`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -366,10 +436,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     appealsRead: (appealId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<Appeal, any>({
         path: `/appeals/${appealId}/`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -381,8 +452,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/appeals/{appeal_id}/
      * @secure
      */
-    appealsUpdate: (appealId: string, data: Appeal, params: RequestParams = {}) =>
-      this.request<Appeal, any>({
+    appealsUpdate: (appealId: string, data: AppealEdit, params: RequestParams = {}) =>
+      this.request<AppealEdit, any>({
         path: `/appeals/${appealId}/`,
         method: "PUT",
         body: data,
@@ -452,11 +523,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/issues/
      * @secure
      */
-    issuesList: (params: RequestParams = {}) =>
-      this.request<void, any>({
+    issuesList: (
+      query: {
+        /** @minLength 1 */
+        issue_name: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<IssueListResponse, any>({
         path: `/issues/`,
         method: "GET",
+        query: query,
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -487,10 +566,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     issuesRead: (issueId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<Issue, any>({
         path: `/issues/${issueId}/`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -581,6 +661,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "POST",
         body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -609,12 +690,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/user/register
      * @secure
      */
-    userRegisterCreate: (data: UserLogin, params: RequestParams = {}) =>
-      this.request<UserLogin, any>({
+    userRegisterCreate: (data: UserRegister, params: RequestParams = {}) =>
+      this.request<UserRegister, any>({
         path: `/user/register`,
         method: "POST",
         body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

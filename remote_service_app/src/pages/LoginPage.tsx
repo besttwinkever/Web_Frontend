@@ -17,7 +17,6 @@ const LoginPage: FC = () => {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
     
-
     const handleLogin = async () => {
         dispatch(setLoaderStatusAction(true))
         
@@ -28,6 +27,7 @@ const LoginPage: FC = () => {
             dispatch(setUserAction(response.data))
             navigate(ROUTES.HOME)
         }).catch((error) => {
+            console.log(error)
             dispatch(setErrorBoxTextAction(error.response.data.error))
             dispatch(setErrorBoxStatusAction(true))
         }).finally(() => {
@@ -37,7 +37,7 @@ const LoginPage: FC = () => {
 
     return (
         <BasePage>
-            <div className='container d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-3 w-50'>
+            <div className='container d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-3 w-25'>
                 <h3 className='text-uppercase text-center'>Аутентификация</h3>
                 <Form>
                     <Form.Group>
