@@ -5,9 +5,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../modules/Routes'
 
-import '../assets/css/ServiceNavbar.css'
+import '../assets/css/serviceNavbar.css'
 
-import { setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, setUserAction, useUser } from '../slices/dataSlice'
+import { setActiveAppealAction, setAppealIssuesAction, setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, setUserAction, useUser } from '../slices/dataSlice'
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { api } from '../api';
@@ -21,6 +21,8 @@ const ServiceNavbar: FC = () => {
     const handleLogout = async () => {
         dispatch(setLoaderStatusAction(true))
         await api.user.userLogoutCreate().then(() => {
+            dispatch(setActiveAppealAction({id: null, count: 0}))
+            dispatch(setAppealIssuesAction([]))
             dispatch(setUserAction(null))
             navigate(ROUTES.HOME)
         }).catch(() => {

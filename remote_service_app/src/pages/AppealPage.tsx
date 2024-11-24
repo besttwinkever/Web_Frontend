@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import BasePage from './BasePage'
 import { Button, Form, Table } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, useActiveAppeal } from '../slices/dataSlice'
+import { setActiveAppealAction, setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, useActiveAppeal } from '../slices/dataSlice'
 import { api } from '../api'
 import { Appeal } from '../api/Api'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -78,6 +78,7 @@ const AppealPage: FC = () => {
 
         dispatch(setLoaderStatusAction(true))
         await api.appeals.appealsConfirmUpdate(id).then(() => {
+            dispatch(setActiveAppealAction({id: null, count: 0}))
             navigate(ROUTES.HOME)
         }).catch((error) => {
             dispatch(setErrorBoxTextAction(error.response.data.error))

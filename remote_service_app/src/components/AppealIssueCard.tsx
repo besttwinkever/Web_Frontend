@@ -52,7 +52,9 @@ const AppealIssueCard: FC<IIssueCardProps> = (
 
     return (
         <div className='d-flex gap-4 shadow shadow-bg border'>
-            <img className='appeal-issue-card-image' src={imageUrl}></img>
+            <div className='appeal-issue-card-image'>
+            <   img src={imageUrl}></img>
+            </div>
             <div className='d-flex flex-column p-2 w-100 bg-white'>
                 <h3>{title}</h3>
                 <div className='d-flex flex-column gap-2'>

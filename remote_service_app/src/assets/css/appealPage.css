@@ -1,4 +1,11 @@
 .appeal-issue-card-image {
-    max-width: 15em;
-    max-height: 12em;
+    width: 20em;
+    height: 12em;
+    object-fit: cover;
+}
+
+.appeal-issue-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
