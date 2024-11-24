@@ -54,7 +54,7 @@ const ServiceNavbar: FC = () => {
             </div>
             <div style={user == null ? {display: 'none'} : {}}>
                 <div className='d-flex gap-4 me-3'>
-                    <span className='mt-2'>{user != null ? user?.username : ''}</span>
+                    <Link style={{color: 'black'}} to={ROUTES.PROFILE} className='mt-2'>{user != null ? user?.username : ''}</Link>
                     <Button variant='outline-danger' className='text-uppercase' onClick={handleLogout}>Выйти</Button>
                 </div>
             </div>

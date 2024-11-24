@@ -5,6 +5,7 @@ export const ROUTES = {
     REGISTER: '/register',
     APPEALS: '/appeals',
     APPEAL: '/appeal',
+    PROFILE: '/profile'
 }
 
 export type RouteKeyType = keyof typeof ROUTES;
@@ -16,4 +17,5 @@ export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
     REGISTER: 'Регистрация',
     APPEALS: 'Обращения',
     APPEAL: 'Обращение',
+    PROFILE: 'Профиль'
   };

@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPager";
 import { ROUTES } from './modules/Routes'
 import AppealsPage from "./pages/AppealsPage";
 import AppealPage from "./pages/AppealPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
             <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
             <Route path={ROUTES.APPEALS} element={<AppealsPage />} />
             <Route path={ROUTES.APPEAL + "/:id"} element={<AppealPage />} />
+            <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
           </Routes>
         </BrowserRouter>
       </>
