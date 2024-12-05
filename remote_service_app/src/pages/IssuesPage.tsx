@@ -10,7 +10,7 @@ import { BreadCrumbs } from '../components/BreadCrumbs'
 import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
 
 import { useDispatch } from 'react-redux'
-import { setActiveAppealAction, setAppealIssuesAction, setLoaderStatusAction, setSearchValueAction, useActiveAppeal, useAppealIssues, useLoaderStatus, useSearchValue } from '../slices/dataSlice'
+import { clearSearchValueAction, setActiveAppealAction, setAppealIssuesAction, setLoaderStatusAction, setSearchValueAction, useActiveAppeal, useAppealIssues, useLoaderStatus, useSearchValue } from '../slices/dataSlice'
 import BasePage from './BasePage'
 import { api } from '../api'
 import { IssuesResponse } from '../api/Api'
@@ -19,7 +19,6 @@ import { Link } from 'react-router-dom'
 const IssuesPage: FC = () => {
 
     const [issues, setIssues] = useState<IssuesResponse[]>([])
-    const [searchValue, setSearchValue] = useState('')
 
     const dispatch = useDispatch()
     const reactSearchValue = useSearchValue()
@@ -27,15 +26,12 @@ const IssuesPage: FC = () => {
     const appealIssues = useAppealIssues()
     const activeAppeal = useActiveAppeal()
 
-    const updateIssues = async (_searchValue='', force = false) => {
-        if (_searchValue.length == 0 && !force)
-            _searchValue = searchValue
+    const updateIssues = async () => {
 
-        dispatch(setSearchValueAction(_searchValue))
         dispatch(setLoaderStatusAction(true))
-
+        console.log(reactSearchValue)
         await api.issues.issuesList({
-            issue_name: _searchValue
+            issue_name: reactSearchValue
         }).then((response) => {
             setIssues(response.data.issues)
             dispatch(setActiveAppealAction(response.data.active_appeal))
@@ -43,7 +39,7 @@ const IssuesPage: FC = () => {
         }).catch(() => {
             let issues: IssuesResponse[] = []
             ISSUES_MOCK.issues.forEach((issue) => {
-                if (issue.name.includes(_searchValue))
+                if (issue.name.includes(reactSearchValue))
                     issues.push(issue)
             })
             setIssues(issues)
@@ -53,17 +49,25 @@ const IssuesPage: FC = () => {
     }
 
     useEffect(() => {
-        setSearchValue(reactSearchValue)
-        updateIssues(reactSearchValue)
+        updateIssues()
     }, [])
 
     const handleSearch = () => {
         updateIssues()
     }
 
+    useEffect(() => {
+        if (reactSearchValue == '') {
+            updateIssues();
+        }
+    }, [reactSearchValue]);
+
     const handleClear = () => {
-        setSearchValue('')
-        updateIssues('', true)
+        dispatch(clearSearchValueAction())
+    }
+
+    const setSearchValue = (val:string) => {
+        dispatch(setSearchValueAction(val))
     }
 
     return (
@@ -73,7 +77,7 @@ const IssuesPage: FC = () => {
                 <div className='d-flex w-100'>
                     <div className='d-flex justify-content-center w-100'>
                         <InputField
-                            value={searchValue} 
+                            value={reactSearchValue} 
                             setValue={setSearchValue} 
                             onSubmit={handleSearch} 
                             onClear={handleClear}

@@ -68,6 +68,18 @@ const AppealsPage: FC = () => {
                     </thead>
                     <tbody style={{fontFamily: 'circeregular', textAlign: 'center'}}>
                         {appeals.map((appeal) => {
+                            if (appeal.time_created != null) {
+                                let d = new Date(Date.parse(appeal.time_created))
+                                appeal.time_created = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
+                            }
+                            if (appeal.time_applied != null) {
+                                let d = new Date(Date.parse(appeal.time_applied))
+                                appeal.time_applied = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
+                            }
+                            if (appeal.time_ended != null) {
+                                let d = new Date(Date.parse(appeal.time_created))
+                                appeal.time_ended = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
+                            }
                             if (user != null && appeal.client == user.username)
                             return (
                                 <tr key={appeal.id}>

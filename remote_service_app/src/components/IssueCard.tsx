@@ -24,8 +24,6 @@ const IssueCard: FC<IIssueCardProps> = (
     const dispatch = useDispatch()
     const appealIssues = useAppealIssues()
 
-    const [isAdded, setIsAdded] = useState(false)
-
     const handleAdd = async () => {
         dispatch(setLoaderStatusAction(true))
         await api.appealIssues.appealIssuesCreate(id.toString()).then((response) => {
@@ -46,7 +44,6 @@ const IssueCard: FC<IIssueCardProps> = (
                 found = true
             }
         })
-        setIsAdded(found)
     }, [appealIssues])
 
     return (
@@ -58,7 +55,7 @@ const IssueCard: FC<IIssueCardProps> = (
                     <Link className='w-100' to={`${ROUTES.ISSUES}/${id}`}>
                         <Button variant="outline-danger" className='details-button w-100'>Подробнее</Button>
                     </Link>
-                    <Button variant="outline-danger" className='add-button w-100' hidden={user == null} disabled={isAdded} onClick={handleAdd}>Добавить</Button>
+                    <Button variant="outline-danger" className='add-button w-100' hidden={user == null} onClick={handleAdd}>Добавить</Button>
                 </div>
             </Card.Body>
         </Card>

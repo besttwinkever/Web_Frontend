@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { AppealIssues } from "../api/Api";
 
 const dataSlice = createSlice({
     name: 'data',
@@ -19,6 +18,9 @@ const dataSlice = createSlice({
     reducers: {
         setSearchValue(state, {payload}) {
             state.SearchValue = payload
+        },
+        clearSearchValue(state) {
+            state.SearchValue = ''
         },
         setUser(state, {payload}) {
             state.User = payload
@@ -53,6 +55,7 @@ export const {
     setErrorBoxStatus: setErrorBoxStatusAction,
     setErrorBoxText: setErrorBoxTextAction,
     setSearchValue: setSearchValueAction,
+    clearSearchValue: clearSearchValueAction,
     setUser: setUserAction,
     setActiveAppeal: setActiveAppealAction,
     setAppealIssues: setAppealIssuesAction,

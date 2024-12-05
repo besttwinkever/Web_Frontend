@@ -51,12 +51,15 @@ const AppealIssueCard: FC<IIssueCardProps> = (
     }
 
     return (
-        <div className='d-flex gap-4 shadow shadow-bg border'>
-            <div className='appeal-issue-card-image'>
-            <   img src={imageUrl}></img>
+        <div className='d-flex gap-4 shadow shadow-bg border rounded-left rounded-right bg-white'>
+            <div className='appeal-issue-card-image w-50'>
+                <img src={imageUrl}></img>
             </div>
-            <div className='d-flex flex-column p-2 w-100 bg-white'>
+            <div className='d-flex w-75 justify-content-center align-items-center text-center text-uppercase'>
                 <h3>{title}</h3>
+            </div>
+            <div className='separator'></div>
+            <div className='d-flex flex-column p-2 justify-content-center align-items-center'>
                 <div className='d-flex flex-column gap-2'>
                     <div className='d-flex gap-2'>
                         <input style={{width: '5em', textAlign: 'center'}} type='number' value={_count} onChange={(event) => {setCount(Number.parseInt(event.target.value))}} disabled={activeAppeal.id != appealId}></input>
