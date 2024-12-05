@@ -16,13 +16,13 @@ export interface IResult {
 }
 
 export const getIssuesByName = async (issue_name = ""): Promise<IResult> => {
-    return fetch(`http://192.168.1.8:8000/issues/?issue_name=${issue_name}`).then(
+    return fetch(`http://192.168.85.254:8000/issues/?issue_name=${issue_name}`).then(
         (response) => response.json()
     )
 }
 
 export const getIssueById = async (id: number): Promise<IIssue> => {
-    return fetch(`http://192.168.1.8:8000/api/issues/${id}/`).then(
+    return fetch(`http://192.168.85.254:8000/api/issues/${id}/`).then(
         (response) => response.json()
     )
 }
