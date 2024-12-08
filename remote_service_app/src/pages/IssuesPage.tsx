@@ -1,6 +1,4 @@
-import { FC, useEffect, useState } from 'react'
-
-import { ISSUES_MOCK } from '../modules/mock'
+import { FC, useEffect } from 'react'
 
 import IssueCard from '../components/IssueCard'
 
@@ -10,51 +8,30 @@ import { BreadCrumbs } from '../components/BreadCrumbs'
 import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
 
 import { useDispatch } from 'react-redux'
-import { clearSearchValueAction, setActiveAppealAction, setAppealIssuesAction, setLoaderStatusAction, setSearchValueAction, useActiveAppeal, useAppealIssues, useLoaderStatus, useSearchValue } from '../slices/dataSlice'
+import { clearSearchValueAction, fetchIssuesList, setSearchValueAction, useActiveAppeal, useAppealIssues, useIssues, useLoaderStatus, useSearchValue } from '../slices/dataSlice'
 import BasePage from './BasePage'
-import { api } from '../api'
-import { IssuesResponse } from '../api/Api'
 import { Link } from 'react-router-dom'
+import { AppDispatch } from '../store'
 
 const IssuesPage: FC = () => {
-
-    const [issues, setIssues] = useState<IssuesResponse[]>([])
-
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const reactSearchValue = useSearchValue()
     const loading = useLoaderStatus()
     const appealIssues = useAppealIssues()
     const activeAppeal = useActiveAppeal()
+    const issues = useIssues()
 
     const updateIssues = async () => {
+        dispatch(fetchIssuesList(reactSearchValue))
+    }
 
-        dispatch(setLoaderStatusAction(true))
-        console.log(reactSearchValue)
-        await api.issues.issuesList({
-            issue_name: reactSearchValue
-        }).then((response) => {
-            setIssues(response.data.issues)
-            dispatch(setActiveAppealAction(response.data.active_appeal))
-            dispatch(setAppealIssuesAction(response.data.appeal_issues))
-        }).catch(() => {
-            let issues: IssuesResponse[] = []
-            ISSUES_MOCK.issues.forEach((issue) => {
-                if (issue.name.includes(reactSearchValue))
-                    issues.push(issue)
-            })
-            setIssues(issues)
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })
+    const handleSearch = () => {
+        updateIssues()
     }
 
     useEffect(() => {
         updateIssues()
     }, [])
-
-    const handleSearch = () => {
-        updateIssues()
-    }
 
     useEffect(() => {
         if (reactSearchValue == '') {
@@ -101,9 +78,9 @@ const IssuesPage: FC = () => {
                     {issues.map((issue) => {
                         return (
                             <IssueCard
-                                id={issue.id}
+                                id={issue.id as number}
                                 title={issue.name}
-                                imageUrl={issue.image}
+                                imageUrl={issue.image as string}
                             ></IssueCard>
                         )
                     })}

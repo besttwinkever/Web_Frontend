@@ -1,14 +1,14 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../modules/Routes';
-import { setActiveAppealAction, setAppealIssuesAction, setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, useAppealIssues, useUser } from '../slices/dataSlice';
+import { fetchAppealIssuesCreate, useAppealIssues, useUser } from '../slices/dataSlice';
 import { useDispatch } from 'react-redux';
-import { api } from '../api';
 import { AppealIssues } from '../api/Api';
+import { AppDispatch } from '../store';
 
 interface IIssueCardProps {
     id: number
@@ -21,20 +21,11 @@ const IssueCard: FC<IIssueCardProps> = (
 ) => {
 
     const user = useUser()
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const appealIssues = useAppealIssues()
 
     const handleAdd = async () => {
-        dispatch(setLoaderStatusAction(true))
-        await api.appealIssues.appealIssuesCreate(id.toString()).then((response) => {
-            dispatch(setActiveAppealAction(response.data.active_appeal))
-            dispatch(setAppealIssuesAction(response.data.appeal_issues))
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Ошибка при добавлении обращения'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })
+        dispatch(fetchAppealIssuesCreate(id))
     }
 
     useEffect(() => {

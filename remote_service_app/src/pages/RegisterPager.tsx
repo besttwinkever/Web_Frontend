@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form'
 import { Button } from 'react-bootstrap'
 import BasePage from './BasePage'
 import { useDispatch } from 'react-redux'
-import { setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction } from '../slices/dataSlice'
-import { api } from '../api'
+import { fetchRegister, setErrorBoxStatusAction, setErrorBoxTextAction } from '../slices/dataSlice'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../modules/Routes'
+import { AppDispatch } from '../store'
 
 
 const LoginPage: FC = () => {
@@ -17,7 +17,7 @@ const LoginPage: FC = () => {
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')
 
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
 
     const handleRegister = async () => {
@@ -25,18 +25,9 @@ const LoginPage: FC = () => {
             dispatch(setErrorBoxTextAction('Пароли не совпадают'))
             return dispatch(setErrorBoxStatusAction(true))
         }
-        dispatch(setLoaderStatusAction(true))
-        await api.user.userRegisterCreate({
-            email: email,
-            username: login,
-            password: password,
-        }).then(() => {
-            navigate(ROUTES.LOGIN)
-        }).catch((error) => {
-            dispatch(setErrorBoxTextAction(error.response.data.status))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
+        dispatch(fetchRegister({email: email, login: login, password: password})).then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled'))
+                navigate(ROUTES.LOGIN)
         })
     }
 

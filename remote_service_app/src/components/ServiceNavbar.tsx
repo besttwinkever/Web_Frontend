@@ -7,29 +7,22 @@ import { ROUTES } from '../modules/Routes'
 
 import '../assets/css/serviceNavbar.css'
 
-import { setActiveAppealAction, setAppealIssuesAction, setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, setUserAction, useUser } from '../slices/dataSlice'
+import { fetchLogout, useUser } from '../slices/dataSlice'
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { api } from '../api';
+import { AppDispatch } from '../store';
 
 const ServiceNavbar: FC = () => {
 
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const user = useUser()
 
     const handleLogout = async () => {
-        dispatch(setLoaderStatusAction(true))
-        await api.user.userLogoutCreate().then(() => {
-            dispatch(setActiveAppealAction({id: null, count: 0}))
-            dispatch(setAppealIssuesAction([]))
-            dispatch(setUserAction(null))
-            navigate(ROUTES.HOME)
-        }).catch(() => {
-            dispatch(setErrorBoxStatusAction(true))
-            dispatch(setErrorBoxTextAction('Ошибка при выходе из системы'))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
+        dispatch(fetchLogout()).then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled')) {
+                navigate(ROUTES.HOME)
+            }
         })
     }
 

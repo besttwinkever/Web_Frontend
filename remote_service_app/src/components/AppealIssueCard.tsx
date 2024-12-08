@@ -2,9 +2,9 @@ import { FC, useState } from 'react'
 
 import Button from 'react-bootstrap/Button';
 import '../assets/css/appealPage.css'
-import { setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, useActiveAppeal } from '../slices/dataSlice';
+import { fetchChangeIssueCount, fetchDeleteAppealIssue, useActiveAppeal } from '../slices/dataSlice';
 import { useDispatch } from 'react-redux';
-import { api } from '../api';
+import { AppDispatch } from '../store';
 
 interface IIssueCardProps {
     id: number
@@ -12,46 +12,27 @@ interface IIssueCardProps {
     title: string
     imageUrl: string
     count: number
-    onDelete: () => void
 }
 
 const AppealIssueCard: FC<IIssueCardProps> = (
-    { id, title, imageUrl, count, appealId, onDelete }
+    { id, title, imageUrl, count, appealId }
 ) => {
 
     const [_count, setCount] = useState(count)
 
     const activeAppeal = useActiveAppeal()
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
 
     const editHandler = async () => {
-        dispatch(setLoaderStatusAction(true))
-        await api.appealIssues.appealIssuesUpdate(id.toString(), {
-            count: _count
-        }).then((response) => {
-            setCount(response.data.count)
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Не смогли изменить количество происшествия'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })
+        dispatch(fetchChangeIssueCount({id: id, count: _count}))
     }
 
     const deleteHandler = async () => {
-        dispatch(setLoaderStatusAction(true))
-        await api.appealIssues.appealIssuesDelete(id.toString()).then(() => {
-            onDelete()
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Не смогли удалить происшествие'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })
+        dispatch(fetchDeleteAppealIssue(id))
     }
 
     return (
-        <div className='d-flex gap-4 shadow shadow-bg border rounded-left rounded-right bg-white'>
+        <div className='d-flex gap-4 shadow shadow-bg border border-light rounded-left rounded-right bg-white'>
             <div className='appeal-issue-card-image w-50'>
                 <img src={imageUrl}></img>
             </div>

@@ -1,39 +1,30 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 
+import '../assets/css/appealsPage.css'
 import BasePage from './BasePage'
-import { Button, Table } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, useUser } from '../slices/dataSlice'
-import { api } from '../api'
-import { Appeal } from '../api/Api'
-import { Link } from 'react-router-dom'
-import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
+import { fetchAppealsList, useAppeals, useUser } from '../slices/dataSlice'
+import { ROUTE_LABELS } from '../modules/Routes'
 import { BreadCrumbs } from '../components/BreadCrumbs'
+import { AppDispatch } from '../store'
+import AppealCard from '../components/AppealCard'
 
 const AppealsPage: FC = () => {
 
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
 
-    const [appeals, setAppeals] = useState<Appeal[]>([])
     const user = useUser()
+    const appeals = useAppeals()
 
     const getData = async () => {
-        dispatch(setLoaderStatusAction(true))
-        api.appeals.appealsList().then((respponse) => {
-            setAppeals(respponse.data)
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Ошибка при загрузке данных'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })
+        dispatch(fetchAppealsList())
     }
 
     useEffect(() => {
         getData()
     }, [])
     
-    const getStatusById = (id: number) => {
+    const getStatusById = (id: number | undefined) => {
         switch (id) {
             case 1: return 'Черновое'
             case 2: return 'Отменено'
@@ -53,53 +44,15 @@ const AppealsPage: FC = () => {
             ]}></BreadCrumbs>
             <div className='container-fluid d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-3 w-75'>
                 <h3>Мои обращения</h3>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>№ обращения</th>
-                            <th>Статус заявки</th>
-                            <th>Сотрудник поддержки</th>
-                            <th>Время создания</th>
-                            <th>Время оформления</th>
-                            <th>Время завершения</th>
-                            <th>Среднее время работы</th>
-                            <th>Действие</th>
-                        </tr>
-                    </thead>
-                    <tbody style={{fontFamily: 'circeregular', textAlign: 'center'}}>
-                        {appeals.map((appeal) => {
-                            if (appeal.time_created != null) {
-                                let d = new Date(Date.parse(appeal.time_created))
-                                appeal.time_created = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-                            }
-                            if (appeal.time_applied != null) {
-                                let d = new Date(Date.parse(appeal.time_applied))
-                                appeal.time_applied = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-                            }
-                            if (appeal.time_ended != null) {
-                                let d = new Date(Date.parse(appeal.time_created))
-                                appeal.time_ended = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-                            }
-                            if (user != null && appeal.client == user.username)
-                            return (
-                                <tr key={appeal.id}>
-                                    <td>{appeal.id}</td>
-                                    <td>{getStatusById(appeal.status_id as number)}</td>
-                                    <td>{appeal.helper == null ? '-' : appeal.helper}</td>
-                                    <td>{appeal.time_created == null ? '-' : appeal.time_created}</td>
-                                    <td>{appeal.time_applied == null ? '-' : appeal.time_applied}</td>
-                                    <td>{appeal.time_ended == null ? '-' : appeal.time_ended}</td>
-                                    <td>{appeal.average_work_time == 0 ? '-' : appeal.average_work_time}</td>
-                                    <td>
-                                        <Link to={`${ROUTES.APPEAL}/${appeal.id}`}>
-                                            <Button variant='outline-danger'>Детали</Button>
-                                        </Link>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
+                <div className='d-flex flex-column gap-3'>
+                    {appeals?.length === 0 ? <h5>У вас нет обращений</h5> : appeals?.map((appeal, index) => {
+                        if (appeal.client != user?.username)
+                            return
+                        return (
+                            <AppealCard id={appeal.id as number} status={getStatusById(appeal.status_id)} average_work_time={appeal.average_work_time as number} time_created={appeal.time_created as string} time_applied={appeal.time_applied as string} time_ended={appeal.time_ended as string}></AppealCard>
+                        )
+                    })}
+                </div>
             </div>
         </BasePage>
     )

@@ -4,11 +4,11 @@ import Form from 'react-bootstrap/Form'
 import { Button } from 'react-bootstrap'
 import BasePage from './BasePage'
 import { useDispatch } from 'react-redux'
-import { setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, setUserAction, useUser } from '../slices/dataSlice'
-import { api } from '../api'
+import { fetchUserUpdate, useUser } from '../slices/dataSlice'
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
 import { BreadCrumbs } from '../components/BreadCrumbs'
+import { AppDispatch } from '../store'
 
 
 const ProfilePage: FC = () => {
@@ -18,29 +18,20 @@ const ProfilePage: FC = () => {
     
     const user = useUser()
 
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
 
     const handleUpdate = async () => {
-        dispatch(setLoaderStatusAction(true))
-        await api.user.userUpdate({
-            email: email,
-            username: login,
-        }).then((response) => {
-            dispatch(setUserAction(response.data))
-            navigate(ROUTES.HOME)
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Ошибка при редактировании профиля'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
+        dispatch(fetchUserUpdate({email: email, login: login})).then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled'))
+                navigate(ROUTES.HOME)
         })
     }
 
     useEffect(() => {
         if (user == null) return
-        setEmail(user.email)
-        setLogin(user.username)
+        setEmail(user.email as string)
+        setLogin(user.username as string)
     }, [])
 
     return (

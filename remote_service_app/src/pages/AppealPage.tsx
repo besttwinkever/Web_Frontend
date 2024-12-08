@@ -5,52 +5,28 @@ import '../assets/css/appealPage.css'
 import BasePage from './BasePage'
 import { Button, Form, Table } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { setActiveAppealAction, setErrorBoxStatusAction, setErrorBoxTextAction, setLoaderStatusAction, useActiveAppeal } from '../slices/dataSlice'
-import { api } from '../api'
-import { Appeal } from '../api/Api'
+import { fetchAppealById, fetchCancelAppeal, fetchConfirmAppeal, fetchSaveConnectionCode, useActiveAppeal, useAppeal } from '../slices/dataSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import AppealIssueCard from '../components/AppealIssueCard'
 import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
 import { BreadCrumbs } from '../components/BreadCrumbs'
+import { AppDispatch } from '../store'
 
 const AppealPage: FC = () => {
 
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const { id } = useParams()
 
-    const [appeal, setAppeal] = useState<Appeal>()
     const [connectionCode, setConnectionCode] = useState('')
-    const activeAppeal = useActiveAppeal()
     const navigate = useNavigate()
+    const appeal = useAppeal()
+    const activeAppeal = useActiveAppeal()
 
     const getData = async () => {
         if (!id) return
         let id_numeric: number = parseInt(id)
         if (isNaN(id_numeric)) return
-
-        dispatch(setLoaderStatusAction(true))
-        await api.appeals.appealsRead(id).then((response) => {
-            if (response.data.time_created != null) {
-                let d = new Date(Date.parse(response.data.time_created))
-                response.data.time_created = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-            }
-            if (response.data.time_applied != null) {
-                let d = new Date(Date.parse(response.data.time_applied))
-                response.data.time_applied = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-            }
-            if (response.data.time_ended != null) {
-                let d = new Date(Date.parse(response.data.time_ended))
-                response.data.time_ended = `${d.getDate().toString().padStart(2, '0')}.${d.getMonth().toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-            }
-
-            setAppeal(response.data)
-            setConnectionCode(response.data.connection_code)
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Не смогли получить информацию об обращении'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })
+        dispatch(fetchAppealById(id_numeric))
     }
 
     useEffect(() => {
@@ -68,52 +44,26 @@ const AppealPage: FC = () => {
         }
     }
 
-    const onDelete = () => {
-        getData()
-    }
-
     const handleSaveConnectionCode = async () => {
         if (!id) return
-
-        dispatch(setLoaderStatusAction(true))
-        await api.appeals.appealsUpdate(id, {
-            connection_code: connectionCode
-        }).then(() => {
-            // all is ok
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Не смогли обновить код подключения'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })
+        dispatch(fetchSaveConnectionCode({id: parseInt(id), connectionCode: connectionCode}))
     }
 
     const confirmHandler = async () => {
         if (!id) return
-
-        dispatch(setLoaderStatusAction(true))
-        await api.appeals.appealsConfirmUpdate(id).then(() => {
-            dispatch(setActiveAppealAction({id: null, count: 0}))
-            navigate(ROUTES.APPEALS)
-        }).catch((error) => {
-            dispatch(setErrorBoxTextAction(error.response.data.error))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
+        dispatch(fetchConfirmAppeal(parseInt(id))).then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled')) {
+                navigate(ROUTES.APPEALS)
+            }
         })
     }
 
     const cancelHandler = async () => {
         if (!id) return
-
-        dispatch(setLoaderStatusAction(true))
-        await api.appeals.appealsDelete(id).then(() => {
-            navigate(ROUTES.HOME)
-        }).catch(() => {
-            dispatch(setErrorBoxTextAction('Не смогли оформить обращение'))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
+        dispatch(fetchCancelAppeal(parseInt(id))).then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled')) {
+                navigate(ROUTES.APPEALS)
+            }
         })
     }
 
@@ -187,7 +137,7 @@ const AppealPage: FC = () => {
                         <h3>Происшествия</h3>
                         {appeal?.issues?.map((issue) => {
                             if (issue.issue.id != null && issue.issue.image != null)
-                                return <AppealIssueCard id={issue.issue.id} count={issue.count} title={issue.issue.name} imageUrl={issue.issue.image} appealId={appeal != null && appeal.id != null ? appeal?.id : -1} onDelete={onDelete}></AppealIssueCard>
+                                return <AppealIssueCard id={issue.issue.id} count={issue.count} title={issue.issue.name} imageUrl={issue.issue.image} appealId={appeal != null && appeal.id != null ? appeal?.id : -1}></AppealIssueCard>
                         })}
                     </div>
                 </div>

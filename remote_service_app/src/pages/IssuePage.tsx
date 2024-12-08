@@ -1,29 +1,20 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useParams } from "react-router-dom"
-
-import { ISSUES_MOCK } from '../modules/mock'
 
 import ServiceNavbar from '../components/ServiceNavbar'
 
 import '../assets/css/issuePage.css'
 import { BreadCrumbs } from '../components/BreadCrumbs'
-import { Issue } from '../api/Api'
-import { api } from '../api'
 import { useDispatch } from 'react-redux'
-import { setErrorBoxTextAction, setLoaderStatusAction } from '../slices/dataSlice'
-import { ROUTE_LABELS, ROUTES } from '../modules/Routes'
+import { fetchIssueById, useIssue } from '../slices/dataSlice'
+import { ROUTE_LABELS} from '../modules/Routes'
+import { AppDispatch } from '../store'
 
 const IssuePage: FC = () => {
 
-    const [issue, setIssue] = useState<Issue>({
-        id: 0,
-        name: 'Происшествие',
-        description: '',
-        image: ''
-    })
-
     const { id } = useParams()
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
+    const issue = useIssue()
 
     useEffect(() => {
         if (!id) return
@@ -31,22 +22,7 @@ const IssuePage: FC = () => {
         if (isNaN(id_numeric)) return
 
         const getDetails = async (id: number) => {
-            dispatch(setLoaderStatusAction(true))
-            await api.issues.issuesRead(id.toString()).then((response) => {
-                setIssue(response.data)
-            }).catch(() => {
-                let found = false;
-                ISSUES_MOCK.issues.forEach((issue) => {
-                    if (issue.id === id_numeric) {
-                        found = true;
-                        return setIssue(issue)
-                    }
-                })
-                if (!found)
-                    setIssue(ISSUES_MOCK.issues[0])
-            }).finally(() => {
-                dispatch(setLoaderStatusAction(false))
-            })
+            dispatch(fetchIssueById(id))
         }
 
         getDetails(id_numeric)

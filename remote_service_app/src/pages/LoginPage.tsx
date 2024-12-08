@@ -2,37 +2,27 @@ import { FC, useState } from 'react'
 
 import Form from 'react-bootstrap/Form'
 import { Button } from 'react-bootstrap'
-import {api} from '../api'
 import BasePage from './BasePage'
 import { useDispatch } from 'react-redux'
-import { setLoaderStatusAction, setErrorBoxStatusAction, setErrorBoxTextAction, setUserAction } from '../slices/dataSlice'
+import { fetchLogin } from '../slices/dataSlice'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../modules/Routes'
+import { AppDispatch } from '../store'
 
 const LoginPage: FC = () => {
 
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
 
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
     
     const handleLogin = async () => {
-        dispatch(setLoaderStatusAction(true))
-        
-        await api.user.userLoginCreate({
-            username: login,
-            password: password
-        }).then((response) => {
-            dispatch(setUserAction(response.data))
-            navigate(ROUTES.HOME)
-        }).catch((error) => {
-            console.log(error)
-            dispatch(setErrorBoxTextAction(error.response.data.error))
-            dispatch(setErrorBoxStatusAction(true))
-        }).finally(() => {
-            dispatch(setLoaderStatusAction(false))
-        })        
+        dispatch(fetchLogin({login: login, password: password})).then((unwrapResult) => {
+            if (unwrapResult.type.endsWith('fulfilled')) {
+                navigate(ROUTES.HOME)
+            }
+        })
     }
 
     return (
