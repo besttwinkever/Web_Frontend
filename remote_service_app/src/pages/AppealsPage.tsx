@@ -26,11 +26,11 @@ const AppealsPage: FC = () => {
     
     const getStatusById = (id: number | undefined) => {
         switch (id) {
-            case 1: return 'Черновое'
-            case 2: return 'Отменено'
-            case 3: return 'Создано'
-            case 4: return 'Отклонено'
-            case 5: return 'Выполнено'
+            case 1: return 'Черновая'
+            case 2: return 'Отменена'
+            case 3: return 'Оформлена'
+            case 4: return 'Отклонена'
+            case 5: return 'Выполнена'
             default: return 'Неизвестный статус'
         }
     }
@@ -43,9 +43,9 @@ const AppealsPage: FC = () => {
                     }
             ]}></BreadCrumbs>
             <div className='container-fluid d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-3 w-75'>
-                <h3>Мои обращения</h3>
+                <h3>Мои жалобы</h3>
                 <div className='d-flex flex-column gap-3'>
-                    {appeals?.length === 0 ? <h5>У вас нет обращений</h5> : appeals?.map((appeal, index) => {
+                    {appeals?.length === 0 ? <h5>У вас нет жалоб</h5> : appeals?.map((appeal, index) => {
                         if (appeal.client != user?.username)
                             return
                         return (

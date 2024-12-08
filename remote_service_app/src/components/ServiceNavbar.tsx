@@ -32,9 +32,9 @@ const ServiceNavbar: FC = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                <Nav.Link as={Link} to={ROUTES.ISSUES}>Виды происшествий</Nav.Link>
+                <Nav.Link as={Link} to={ROUTES.ISSUES}>Неисправности</Nav.Link>
                 <div style={user == null ? {display: 'none'} : {}}>
-                    <Nav.Link as={Link} to={ROUTES.APPEALS}>Мои обращения</Nav.Link>
+                    <Nav.Link as={Link} to={ROUTES.APPEALS}>Мои жалобы</Nav.Link>
                 </div>
             </Nav>
             <div style={user != null ? {display: 'none'} : {}}>

@@ -35,11 +35,11 @@ const AppealPage: FC = () => {
 
     const getStatusById = (id: number) => {
         switch (id) {
-            case 1: return 'Черновое'
-            case 2: return 'Отменено'
-            case 3: return 'Создано'
-            case 4: return 'Отклонено'
-            case 5: return 'Выполнено'
+            case 1: return 'Черновая'
+            case 2: return 'Отменена'
+            case 3: return 'Оформлена'
+            case 4: return 'Отклонена'
+            case 5: return 'Выполнена'
             default: return 'Неизвестный статус'
         }
     }
@@ -75,11 +75,11 @@ const AppealPage: FC = () => {
                         path: ROUTES.APPEALS
                     },
                     {
-                        label: `Обращение №${appeal?.id}`
+                        label: `Жалоба №${appeal?.id}`
                     }
             ]}></BreadCrumbs>
             <div className='container-fluid d-flex flex-column justify-content-center shadow-bg p-4 w-100 gap-3'>
-                <h1 className='text-uppercase'>Обращение №{appeal?.id}</h1>
+                <h1 className='text-uppercase'>Жалоба №{appeal?.id}</h1>
                 <div hidden={activeAppeal.id != appeal?.id}>
                     <div className='action-container d-flex flex-column gap-2'>
                         <Form className='shadow-bg'>
@@ -105,7 +105,7 @@ const AppealPage: FC = () => {
                                     <td>{appeal?.connection_code}</td>
                                 </tr>
                                 <tr>
-                                    <td>Сотрудник поддержки</td>
+                                    <td>Агент удаленной поддержки</td>
                                     <td>{appeal?.helper}</td>
                                 </tr>
                                 <tr>
@@ -134,7 +134,7 @@ const AppealPage: FC = () => {
                 </div>
                 <div className='d-flex gap-5'>
                     <div className='d-flex flex-column gap-3 w-50 mt-3'>
-                        <h3>Происшествия</h3>
+                        <h3>Неисправности</h3>
                         {appeal?.issues?.map((issue) => {
                             if (issue.issue.id != null && issue.issue.image != null)
                                 return <AppealIssueCard id={issue.issue.id} count={issue.count} title={issue.issue.name} imageUrl={issue.issue.image} appealId={appeal != null && appeal.id != null ? appeal?.id : -1}></AppealIssueCard>

@@ -22,7 +22,7 @@ const AppealCard: FC<IAppealCardProps> = (
         <Link to={`${ROUTES.APPEAL}/${id}`}>
             <Card className='shadow shadow-bg w-100' >
                 <Card.Body className='d-flex flex-column'>
-                    <Card.Title style={{fontSize: '2em'}}>{`Обращение №${id}`}</Card.Title>
+                    <Card.Title style={{fontSize: '2em'}}>{`Жалоба №${id}`}</Card.Title>
                     <div className='d-flex flex-column w-100 h-100 flex-grow justify-content-end'>
                         <Card.Text className='appeal-text'>{`Статус: ${status}`}</Card.Text>
                         <Card.Text className='appeal-text'>{`Время создания: ${time_created != null ? time_created : '-'}`}</Card.Text>

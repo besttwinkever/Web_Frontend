@@ -27,7 +27,7 @@ const LoginPage: FC = () => {
 
     return (
         <BasePage>
-            <div className='container d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-3 w-25'>
+            <div className='container d-flex flex-column justify-content-center mt-5 border shadow shadow-bg p-3 w-25 bg-white'>
                 <h3 className='text-uppercase text-center'>Аутентификация</h3>
                 <Form>
                     <Form.Group>

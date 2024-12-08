@@ -341,7 +341,7 @@ const dataSlice = createSlice({
         builder.addCase(fetchChangeIssueCount.rejected, (state) => {
             state.LoaderStatus = false
             state.ErrorBoxStatus = true
-            state.ErrorBoxText = 'Не смогли изменить количество происшествий'
+            state.ErrorBoxText = 'Не смогли изменить количество неисправностей'
         })
 
         // user update
@@ -375,7 +375,7 @@ const dataSlice = createSlice({
         builder.addCase(fetchDeleteAppealIssue.rejected, (state) => {
             state.LoaderStatus = false
             state.ErrorBoxStatus = true
-            state.ErrorBoxText = 'Не смогли удалить происшествие'
+            state.ErrorBoxText = 'Не смогли удалить неисправность'
         })
 
         // appeal issues create
@@ -390,7 +390,7 @@ const dataSlice = createSlice({
         builder.addCase(fetchAppealIssuesCreate.rejected, (state) => {
             state.LoaderStatus = false
             state.ErrorBoxStatus = true
-            state.ErrorBoxText = 'Не смогли добавить происшествие'
+            state.ErrorBoxText = 'Не смогли добавить неисправность'
         })
 
         // appeal by id
@@ -418,7 +418,7 @@ const dataSlice = createSlice({
         builder.addCase(fetchAppealById.rejected, (state) => {
             state.LoaderStatus = false
             state.ErrorBoxStatus = true
-            state.ErrorBoxText = 'Не смогли получить информацию об обращении'
+            state.ErrorBoxText = 'Не смогли получить информацию о жалобе'
         })
 
         // save connection code
@@ -447,7 +447,7 @@ const dataSlice = createSlice({
         builder.addCase(fetchConfirmAppeal.rejected, (state) => {
             state.LoaderStatus = false
             state.ErrorBoxStatus = true
-            state.ErrorBoxText = 'Не смогли подтвердить обращение'
+            state.ErrorBoxText = 'Не смогли оформить жалобу'
         })
 
         // cancel appeal
@@ -460,7 +460,7 @@ const dataSlice = createSlice({
         builder.addCase(fetchCancelAppeal.rejected, (state) => {
             state.LoaderStatus = false
             state.ErrorBoxStatus = true
-            state.ErrorBoxText = 'Не смогли отменить обращение'
+            state.ErrorBoxText = 'Не смогли отменить жалобу'
         })
 
         // appeals list
@@ -488,7 +488,7 @@ const dataSlice = createSlice({
         builder.addCase(fetchAppealsList.rejected, (state) => {
             state.LoaderStatus = false
             state.ErrorBoxStatus = true
-            state.ErrorBoxText = 'Не смогли получить список обращений'
+            state.ErrorBoxText = 'Не смогли получить список жалоб'
         })
 
         // issue by id

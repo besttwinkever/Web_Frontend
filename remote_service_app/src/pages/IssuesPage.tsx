@@ -59,7 +59,7 @@ const IssuesPage: FC = () => {
                             onSubmit={handleSearch} 
                             onClear={handleClear}
                             loading={loading} 
-                            placeholder='Введите название происшествия'>
+                            placeholder='Введите название неисправности'>
                         </InputField>
                     </div>
                     <div className='d-flex flex-grow-1 appeal-content'>

@@ -12,10 +12,10 @@ export type RouteKeyType = keyof typeof ROUTES;
 
 export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
     HOME: 'Главная',
-    ISSUES: 'Виды происшествий',
+    ISSUES: 'Неисправности',
     LOGIN: 'Аутентификация',
     REGISTER: 'Регистрация',
-    APPEALS: 'Обращения',
-    APPEAL: 'Обращение',
+    APPEALS: 'Жалобы',
+    APPEAL: 'Жалоба',
     PROFILE: 'Профиль'
   };
